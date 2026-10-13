@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>图书管理系统</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h1>图书管理系统</h1>
+
+  <% if (success === 'add') { %>
+    <div class="msg success">添加图书成功！</div>
+  <% } else if (success === 'edit') { %>
+    <div class="msg success">修改图书成功！</div>
+  <% } else if (success === 'delete') { %>
+    <div class="msg success">删除图书成功！</div>
+  <% } %>
+
+  <div class="search-bar">
+    <form action="/search" method="GET">
+      <input type="text" name="keyword" placeholder="请输入图书名称" value="<%= keyword || '' %>">
+      <select name="bookType">
+        <option value="">--请选择图书类型--</option>
+        <% bookTypes.forEach(function(t) { %>
+          <option value="<%= t.id %>" <%= (typeof bookType !== 'undefined' && bookType == t.id) ? 'selected' : '' %>><%= t.typeName %></option>
+        <% }); %>
+      </select>
+      <button type="submit">查询</button>
+    </form>
+    <a href="/book/add" class="btn">添加图书</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>图书编码</th>
+        <th>图书名称</th>
+        <th>图书类型</th>
+        <th>作者</th>
+        <th>出版社</th>
+        <th>出版日期</th>
+        <th>是否借出</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% books.forEach(function(book) { %>
+        <tr>
+          <td><%= book.bookCode %></td>
+          <td><%= book.bookName %></td>
+          <td><%= getTypeName(book.bookType) %></td>
+          <td><%= book.bookAuthor %></td>
+          <td><%= book.publishPress %></td>
+          <td><%= formatDate(book.publishDate) %></td>
+          <td><%= book.borrowed === 1 ? '已借出' : '未借出' %></td>
+          <td><%= formatDate(book.creationTime) %></td>
+          <td>
+            <a href="/book/<%= book.bookId %>">查看</a>
+            <a href="/book/edit/<%= book.bookId %>">修改</a>
+            <a href="/book/delete/<%= book.bookId %>">删除</a>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <% if (totalPages > 1) { %>
+    <div class="pagination">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <% if (i === currentPage) { %>
+          <span class="current"><%= i %></span>
+        <% } else { %>
+          <a href="/?page=<%= i %>&keyword=<%= keyword || '' %>"><%= i %></a>
+        <% } %>
+      <% } %>
+    </div>
+  <% } %>
+</body>
+</html>

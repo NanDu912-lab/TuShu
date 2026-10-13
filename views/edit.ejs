@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>修改图书</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h1>修改图书</h1>
+
+  <% if (error) { %>
+    <div class="msg error"><%= error %></div>
+  <% } %>
+
+  <form id="editForm" action="/book/edit/<%= book.bookId %>" method="POST">
+    <table class="form-table">
+      <tr>
+        <td>图书编码：</td>
+        <td><input type="text" name="bookCode" value="<%= book.bookCode %>" required></td>
+      </tr>
+      <tr>
+        <td>图书名称：</td>
+        <td><input type="text" name="bookName" value="<%= book.bookName %>" required></td>
+      </tr>
+      <tr>
+        <td>图书类型：</td>
+        <td>
+          <select name="bookType" required>
+            <option value="">--请选择--</option>
+            <% bookTypes.forEach(function(t) { %>
+              <option value="<%= t.id %>" <%= book.bookType === t.id ? 'selected' : '' %>><%= t.typeName %></option>
+            <% }); %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>作者：</td>
+        <td><input type="text" name="bookAuthor" value="<%= book.bookAuthor %>" required></td>
+      </tr>
+      <tr>
+        <td>出版社：</td>
+        <td><input type="text" name="publishPress" value="<%= book.publishPress %>" required></td>
+      </tr>
+      <tr>
+        <td>出版日期：</td>
+        <td><input type="date" name="publishDate" value="<%= book.publishDate %>" required></td>
+      </tr>
+      <tr>
+        <td>是否借出：</td>
+        <td>
+          <select name="borrowed">
+            <option value="0" <%= book.borrowed === 0 ? 'selected' : '' %>>未借出</option>
+            <option value="1" <%= book.borrowed === 1 ? 'selected' : '' %>>已借出</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>创建人：</td>
+        <td><input type="text" value="<%= book.createdBy %>" readonly></td>
+      </tr>
+      <tr>
+        <td>创建时间：</td>
+        <td><input type="text" value="<%= formatDate(book.creationTime) %>" readonly></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="btn-row">
+          <button type="submit" class="btn">修改</button>
+          <a href="/" class="btn">返回</a>
+        </td>
+      </tr>
+    </table>
+  </form>
+
+  <script>
+    $(function() {
+      $('#editForm').on('submit', function(e) {
+        var required = ['bookCode', 'bookName', 'bookType', 'bookAuthor', 'publishPress', 'publishDate'];
+        for (var i = 0; i < required.length; i++) {
+          var el = $('[name=' + required[i] + ']');
+          if (!el.val() || el.val().trim() === '') {
+            alert('请填写所有必填字段');
+            e.preventDefault();
+            return false;
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

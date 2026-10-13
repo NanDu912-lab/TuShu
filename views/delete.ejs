@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>删除确认</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h1>删除确认</h1>
+  <div class="delete-confirm">
+    <p>确定删除图书 "<strong><%= book.bookName %></strong>" 吗？</p>
+    <form action="/book/delete/<%= book.bookId %>" method="POST">
+      <button type="submit" class="btn btn-danger">确认删除</button>
+      <a href="/" class="btn">取消</a>
+    </form>
+  </div>
+</body>
+</html>
