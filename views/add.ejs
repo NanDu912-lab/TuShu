@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>添加图书</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h1>添加图书</h1>
+
+  <% if (error) { %>
+    <div class="msg error"><%= error %></div>
+  <% } %>
+
+  <form id="addForm" action="/book/add" method="POST">
+    <table class="form-table">
+      <tr>
+        <td>图书编码：</td>
+        <td><input type="text" name="bookCode" id="bookCode" required></td>
+      </tr>
+      <tr>
+        <td>图书名称：</td>
+        <td><input type="text" name="bookName" id="bookName" required></td>
+      </tr>
+      <tr>
+        <td>图书类型：</td>
+        <td>
+          <select name="bookType" id="bookType" required>
+            <option value="">--请选择--</option>
+            <% bookTypes.forEach(function(t) { %>
+              <option value="<%= t.id %>"><%= t.typeName %></option>
+            <% }); %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>作者：</td>
+        <td><input type="text" name="bookAuthor" id="bookAuthor" required></td>
+      </tr>
+      <tr>
+        <td>出版社：</td>
+        <td><input type="text" name="publishPress" id="publishPress" required></td>
+      </tr>
+      <tr>
+        <td>出版日期：</td>
+        <td><input type="date" name="publishDate" id="publishDate" required></td>
+      </tr>
+      <tr>
+        <td>是否借出：</td>
+        <td>
+          <select name="borrowed">
+            <option value="0" selected>未借出</option>
+            <option value="1">已借出</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>创建人：</td>
+        <td><input type="text" value="admin" readonly></td>
+      </tr>
+      <tr>
+        <td>创建时间：</td>
+        <td><input type="text" value="<%= defaultTime %>" readonly></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="btn-row">
+          <button type="submit" class="btn">保存</button>
+          <a href="/" class="btn">返回</a>
+        </td>
+      </tr>
+    </table>
+  </form>
+
+  <script>
+    $(function() {
+      $('#addForm').on('submit', function(e) {
+        var fields = ['bookCode', 'bookName', 'bookType', 'bookAuthor', 'publishPress', 'publishDate'];
+        for (var i = 0; i < fields.length; i++) {
+          var val = $('#' + fields[i]).val();
+          if (!val || val.trim() === '') {
+            alert('请填写所有必填字段');
+            e.preventDefault();
+            return false;
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

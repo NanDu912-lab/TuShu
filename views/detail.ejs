@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>图书详情</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h1>图书详情</h1>
+  <table class="detail-table">
+    <tr><td class="label">图书编号</td><td class="value red"><%= book.bookId %></td></tr>
+    <tr><td class="label">图书名称</td><td class="value red"><%= book.bookName %></td></tr>
+    <tr><td class="label">图书类型</td><td class="value red"><%= getTypeName(book.bookType) %></td></tr>
+    <tr><td class="label">作者</td><td class="value red"><%= book.bookAuthor %></td></tr>
+    <tr><td class="label">出版社</td><td class="value red"><%= book.publishPress %></td></tr>
+    <tr><td class="label">是否借出</td><td class="value red"><%= book.borrowed === 1 ? '已借出' : '未借出' %></td></tr>
+    <tr><td class="label">创建人</td><td class="value red"><%= book.createdBy %></td></tr>
+    <tr><td class="label">创建时间</td><td class="value red"><%= formatDate(book.creationTime) %></td></tr>
+  </table>
+  <br>
+  <a href="/" class="btn">返回</a>
+</body>
+</html>
